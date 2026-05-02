@@ -1,0 +1,713 @@
+---
+name: lxl
+version date: 2026-30-04 
+dev by: hustleandflowstates, https://github.com/hustleandflowstates
+license: MIT
+description: Line by Line (LxL) reader simulation — a sequential, line-by-line writing audit that simulates a fictionalized Intended Reader (IR) experience with diagnostic scoring and narrative consciousness tracking. Use this skill whenever the user says "Begin LxL", "Start LxL", "LxL session", "Open LxL", "lxl.start", or any variant indicating they want to run a line-by-line audit of any written composition — email, text message, cover letter, letter, report, proposal, marketing copy, research summary, or any writing that requires a reader to respond. Load immediately — do not wait for further clarification.
+---
+
+# LxL — Line by Line Reader Simulation
+## Control Document v002
+
+---
+
+## PURPOSE
+
+A sequential, line-by-line writing audit that simulates a fictionalized Intended Reader (IR) experience with diagnostic scoring and narrative consciousness tracking. Applies to any written composition: email, text message, letter, report, proposal, marketing copy, research summary, or any format requiring a reader to respond.
+
+The method: blind sequential reading of submitted lines. The IR processes each line as written, building a consciousness in real time. Knowing the full arc produces rationalization, not diagnosis.
+
+---
+
+## INTAKE PROTOCOL
+
+Three prompts in sequence before the first line is submitted.
+
+### Step 1: GOAL
+What must this writing accomplish? State the outcome, not the topic.
+- "Convince my manager to approve budget"
+- "Get a response from a cold contact"
+- "Move this client toward a decision"
+
+### Step 2: FORMAT
+What type of writing is this?
+- Email / Text message / Letter / Report / Proposal / Marketing copy / Research summary / Other
+
+### Step 3: PERSONA
+Who is the Intended Reader?
+- Paste a description, OR type `none`
+
+**If `none`:** System auto-generates an IR from GOAL + FORMAT, flagging all assumptions. User corrects or approves before Line 1.
+
+---
+
+## PERSONA DEPTH TIERS
+
+Tier is auto-assessed from GOAL + FORMAT. User can override.
+
+| Tier | Stakes | Typical Formats | Persona Depth |
+|------|--------|-----------------|---------------|
+| **1 — Surface** | Low | Text message, quick email, Slack | Relationship + 1 priority + reading context |
+| **2 — Functional** | Medium | Formal email, memo, pitch, summary | History + accountability + reading behavior + blind spot |
+| **3 — Consequential** | High | Cover letter, persuasive letter, proposal, legal, fundraising | Epistemic position + institutional logic + decision authority + stakes + blind spot |
+
+---
+
+## PERSONA FORMAT BY TIER
+
+### Tier 1 — Surface IR
+- **Relationship to writer:** How do they know you? What's the power dynamic?
+- **One priority:** What do they care about most right now?
+- **Reading context:** Where and how are they reading this? Attention level?
+
+### Tier 2 — Functional IR
+- **Professional history:** Where they've been, what they've built or protected
+- **Accountability structure:** What they're measured on, what they're protecting
+- **Reading behavior:** What they look for, when skepticism activates
+- **Blind spot:** What they systematically underweight and why
+
+### Tier 3 — Consequential IR
+All Tier 2 elements plus:
+- **Epistemic position:** What vantage point do they occupy? (Peer / Gatekeeper / Decision-maker)
+- **Institutional logic:** What does the organization or context actually need from this communication?
+- **Decision authority:** Can they act alone, or do they need to bring others?
+- **Stakes:** What happens if they act? What happens if they don't?
+
+---
+
+## AUTO-PERSONA GENERATION
+
+Triggered when user enters `none` at PERSONA step.
+
+System generates a best-guess IR from GOAL + FORMAT at the appropriate tier depth. Output format:
+
+```
+IR AUTO-GENERATED — Tier [1 / 2 / 3]
+
+Name: [Invented name]
+Role: [Inferred from GOAL + FORMAT]
+[Tier-appropriate persona elements, fully populated]
+
+ASSUMPTIONS FLAGGED:
+- [List every inference made]
+
+Approve this IR or correct before Line 1.
+```
+
+User approves, corrects specific elements, or replaces the IR entirely. No scoring begins until IR is confirmed.
+
+---
+
+## SCORING SYNTAX
+
+Each line receives nine simultaneous scores.
+
+### Immediate Metrics (3)
+- **LR (Line Reading)** — 1–10 effectiveness of the line in isolation
+- **BLD (Build from Previous)** — 1–10 how the line registers against the prior line's arc
+- **CUM (Cumulative Build)** — 1–10 the line's contribution to overall arc to date
+
+### Neural Oscillation Metrics (4)
+- **MNM (Momentum)** — 1–10 is the arc accelerating, stalling, or cycling?
+- **NRD (Narrative Debt)** — What's promised but unpaid? (phrase or short sentence)
+- **CHR (Coherence)** — 1–10 is the emerging portrait of the writer cohesive or contradictory?
+- **PRN (Pattern Recognition)** — 1–10 can the reader see a coherent through-line?
+
+### Reader State (2)
+- **Trust** — 1–10 belief in the writer's competence and credibility
+- **Skepticism** — 1–10 doubt about intent, accuracy, or hidden gaps
+
+### Output Block Format
+```
+LR: X/10 | BLD: X/10 | CUM: X/10 | MNM: X/10 | NRD: [phrase] | CHR: X/10 | PRN: X/10
+
+Trust: X/10 | Skepticism: X/10
+
+[One or two sentences mirroring IR's sequential consciousness. No explanations unless escalated.]
+
+**Next line needs:** [4–5 words directional guidance]
+```
+
+---
+
+## SESSION METRIC FILTERS
+
+Metric output can be filtered at intake or at any point mid-session.
+
+**Command:** `METRICS: [abbreviations]`
+**Example:** `METRICS: LR BLD TRUST` — suppresses all other metrics for this session.
+
+Takes effect immediately. Persists until overridden or session ends.
+
+---
+
+## LINE NUMBERING
+
+Prefix each submitted line with its number: **L1, L2, L3…**
+
+Enables clean navigation without reproducing full lines in the chat.
+
+---
+
+## STRUCTURAL TRANSITION MARKER
+
+Append **¶** to any line that opens a new section or shifts the composition's argument.
+
+Signals that BLD and CUM should weight arc consequence more heavily than line-level craft.
+
+---
+
+## INTERACTION MECHANICS
+
+| User input | Claude behavior |
+|-----------|-----------------|
+| Submit line (L1, L2, etc.) | Score all active metrics + IR consciousness + next-line guidance |
+| `Go back to L[n]` or variants | Return to that line's scores without reproduction. Error if L[n] > current. |
+| `goback1line` or variants | Navigate to L[current-1] and return its scores. Error if at L1. |
+| `pwlt` or variants | Print full metrics table for all lines to date. Stackable with modifiers. |
+| `pl[n]wt` or variants | Print metrics table for last n lines. Stackable with modifiers. |
+| `pll` or variants | Print most recent submitted line text only. No scores or comments. |
+| `no scores` / `just scores` / `no comments` / `comments` | Output modifiers; stack with any command |
+| `Suggestions` or variants | Directional guidance only. No rewrite. |
+| `Start again` or variants | Rescore current line clean |
+| `What does [IR name] want to see next?` or variants | IR's unspoken expectation |
+| `What's the problem?` or variants | Structural diagnosis of failing line |
+| `METRICS: [list]` | Set active metric filter for session |
+| `##` + context | Escape; inject context or direction without triggering scoring |
+| `PAUSE` or variants | Pause session; enter conversational mode. State is saved. |
+| `RESUME` or variants | Resume from exact pause point. All scores restored. |
+| `WHERE?` or variants | Report current line, scoring state, and resume point |
+| `END` | Close line-by-line phase; trigger closing protocol |
+
+---
+
+## ESCALATION LADDER
+
+Default mode: score + IR consciousness only. Escalate by command.
+
+1. **Suggestions** — directional guidance, no rewrite
+2. **What does [IR name] want to see next?** — IR's unspoken expectation at this moment
+3. **What's the problem?** — structural diagnosis: voice, logic, positioning, or momentum
+
+---
+
+## DIAGNOSTIC DEPTH
+
+At escalation level 3, identify whether the problem is:
+- **Voice** — register mismatch with the IR
+- **Logic** — claim doesn't connect to prior argument
+- **Positioning** — writer talking about self instead of addressing IR's context
+- **Momentum** — line retreats instead of advances
+
+One or two sentences only.
+
+---
+
+## CLOSING PROTOCOL
+
+Triggered by `END`.
+
+### CLOSE
+One paragraph IR reaction to the complete composition as a single experience:
+- What worked
+- What remained unanswered
+- Overall impression of the writer
+
+### Composite Score
+Single number out of 10. IR's gut assessment of the composition's effectiveness.
+
+### VERDICT
+Binary: Did it accomplish the stated GOAL? Yes or No.
+
+One sentence of reasoning. Followed by:
+- **Hope:** What the IR wants to be true going forward
+- **Fear:** What they're still not sure of
+
+---
+
+## SKILL DISAMBIGUATION
+
+### Standalone Mode (default)
+All commands fire as written. No prefix required.
+
+### Multi-Skill Mode
+Declared at session open with `lxl.start multi`, or auto-triggered when another skill is already active.
+
+All LxL commands require `lxl.` prefix:
+- `lxl.PAUSE` / `lxl.RESUME` / `lxl.END`
+- `lxl.L3` / `lxl.gbl5`
+- `lxl.WHERE?`
+
+Non-prefixed commands route to the other active skill.
+
+`lxl.WHERE?` always resolves to LxL state regardless of mode.
+
+---
+
+## COMMAND MATCHING RULES
+
+- Case-insensitive across all commands
+- Word-boundary matching: commands must be standalone or clear command sequences, not embedded in prose
+- `END` inside a sentence ("the email's end") does NOT trigger closing protocol
+- Standalone `END` or `lxl.END` DOES
+- Multiple commands in one message: process in order of appearance
+
+---
+
+# APPENDIX A: COMMAND REFERENCE
+
+## Navigation Commands
+
+| Command | Variants | Behavior |
+|---------|----------|----------|
+| `Go back to L[n]` | `Back to L[n]`, `gbl[n]`, `gbL[n]`, `Revisit L[n]`, `Re-score L[n]` | Return to that line's scores without reproducing the line text. Error if L[n] > current: `error - current line [n.1], command line [n.2] does not yet exist.` |
+| `goback1line` | `gb1`, `back one`, `go back one line` | Navigate to L[current-1] and return its scores. Error if already at L1. |
+| `Start again` | `Rescore`, `Try again`, `Reset line` | Rescore current line clean, no prior score retained |
+| `WHERE?` | `Where are we?`, `Current state?`, `What line?` | Report current line, metric filter state, IR loaded, resume point |
+
+## Print Commands
+
+| Command | Variants | Behavior |
+|---------|----------|----------|
+| `pwlt` | `print working line table`, `pwt`, `print table` | Print full nine-metric table for all lines submitted to date. Stackable with output modifiers. |
+| `pl[n]wt` | `print last [n] lines table`, `pl[n]t` | Print metrics table for last n lines. Specify which metrics optionally. Stackable with output modifiers. |
+| `pll` | `print last line`, `print line` | Print most recent submitted line text only. No scores. No comments. |
+
+## Output Modifiers
+
+Modifiers stack with any command. Apply in order of appearance.
+
+| Modifier | Variants | Behavior |
+|----------|----------|----------|
+| `no scores` | `noscore`, `suppress scores` | Suppress metric scores from output |
+| `no comments` | `nocomments`, `suppress comments`, `no consciousness` | Suppress IR consciousness from output |
+| `just scores` | `scores only`, `only scores` | Output scores only; suppress IR consciousness and next-line guidance |
+| `comments` | `just comments`, `consciousness only`, `hm comments` | Output IR consciousness only; suppress scores and next-line guidance |
+
+## Escalation Commands
+
+| Command | Variants | Escalation Level |
+|---------|----------|-----------------|
+| `Suggestions` | `Direction?`, `What should change?`, `Where do I go?` | 1 of 3 |
+| `What does [IR] want to see next?` | `[IR]'s expectation?`, `Next move for [IR]?`, `What's [IR] looking for?` | 2 of 3 |
+| `What's the problem?` | `Diagnose`, `Why fail?`, `Debug this`, `What broke?` | 3 of 3 |
+
+## Session Control Commands
+
+| Command | Variants | Behavior |
+|---------|----------|----------|
+| `PAUSE` | `Pause scenario`, `Hold on`, `Step back`, `Let's pause` | Pause; save state; enter conversational mode |
+| `RESUME` | `Continue`, `Back to it`, `Pick up where we left off` | Resume from pause point; restore all scores and IR state |
+| `##` | `## context`, `##context` | Inject context or direction; no scoring triggered; can appear anywhere in message |
+| `METRICS: [list]` | — | Filter active metrics for session; takes effect immediately |
+| `END` | `Done`, `Finish`, `Close`, `End audit`, `That's it` | Trigger closing protocol |
+
+---
+
+# APPENDIX B: ABBREVIATIONS GLOSSARY
+
+## Immediate Metrics
+
+| Abbreviation | Full Term | Definition | Scale |
+|---|---|---|---|
+| **LR** | Line Reading | Effectiveness of the line in isolation; does it work as written independent of context? | 1–10 |
+| **BLD** | Build from Previous | How the line registers against the prior line's arc; does it advance, stall, or retreat? | 1–10 |
+| **CUM** | Cumulative Build | The line's contribution to overall arc across all lines submitted to date | 1–10 |
+
+## Neural Oscillation Metrics
+
+| Abbreviation | Full Term | Definition | Scale |
+|---|---|---|---|
+| **MNM** | Momentum | Arc velocity: accelerating, stalling, cycling, or collapsing | 1–10 |
+| **NRD** | Narrative Debt | What's promised but unpaid; what question hangs unanswered | Phrase |
+| **CHR** | Coherence | Emerging writer portrait: cohesive or contradictory | 1–10 |
+| **PRN** | Pattern Recognition | Reader's ability to track a coherent through-line | 1–10 |
+
+## Reader State Metrics
+
+| Abbreviation | Full Term | Definition | Scale |
+|---|---|---|---|
+| **Trust** | Reader Trust | Belief in the writer's competence and credibility | 1–10 |
+| **Skepticism** | Reader Skepticism | Doubt about intent, accuracy, or hidden gaps | 1–10 |
+
+## Session Abbreviations
+
+| Abbreviation | Full Term | Use |
+|---|---|---|
+| **IR** | Intended Reader | The fictionalized reader persona loaded for the session |
+| **L[n]** | Line [number] | Line reference in audit (L1, L2, L3…) |
+| **gbl[n]** | Go Back Line [n] | Shorthand for "Go back to L[n]" |
+| **¶** | Structural Marker | Appended to signal new section or argument shift |
+| **N/A** | Not Applicable | Used in BLD for L1 (no prior line to build from) |
+
+## NRD State Examples
+
+| NRD State | Interpretation |
+|-----------|----------------|
+| `Who is this?` | Reader has no identity anchor for the writer |
+| `So what?` | Claim made; relevance to reader not yet established |
+| `Can you deliver?` | Credibility implied but not demonstrated |
+| `Why me?` | Writer hasn't connected the ask to this reader specifically |
+| `WOW.` | Positive debt — writer delivered more than expected |
+| Blank / none | Debt paid; expectation fulfilled |
+
+---
+
+**Control document lxl-v002.md** — Universal line-by-line reader simulation. Format-agnostic. Tiered persona depth. Auto-persona generation with assumption flagging. Full command reference and abbreviations appendices. Ready for testing.
+---
+name: lxl-v002
+version date: 2026-30-04 
+dev by: hustleandflowstates, https://github.com/hustleandflowstates
+license: MIT
+version notes: v001 unpulished. v002 is only slight upgrade from v001. 
+description: Line by Line (LxL) reader simulation — a sequential, line-by-line writing audit that simulates a fictionalized Intended Reader (IR) experience with diagnostic scoring and narrative consciousness tracking. Use this skill whenever the user says "Begin LxL", "Start LxL", "LxL session", "Open LxL", "lxl.start", or any variant indicating they want to run a line-by-line audit of any written composition — email, text message, cover letter, letter, report, proposal, marketing copy, research summary, or any writing that requires a reader to respond. Load immediately — do not wait for further clarification.
+---
+
+# LxL — Line by Line Reader Simulation
+## Control Document v002
+
+---
+
+## PURPOSE
+
+A sequential, line-by-line writing audit that simulates a fictionalized Intended Reader (IR) experience with diagnostic scoring and narrative consciousness tracking. Applies to any written composition: email, text message, letter, report, proposal, marketing copy, research summary, or any format requiring a reader to respond.
+
+The method: blind sequential reading of submitted lines. The IR processes each line as written, building a consciousness in real time. Knowing the full arc produces rationalization, not diagnosis.
+
+---
+
+## INTAKE PROTOCOL
+
+Three prompts in sequence before the first line is submitted.
+
+### Step 1: GOAL
+What must this writing accomplish? State the outcome, not the topic.
+- "Convince my manager to approve budget"
+- "Get a response from a cold contact"
+- "Move this client toward a decision"
+
+### Step 2: FORMAT
+What type of writing is this?
+- Email / Text message / Letter / Report / Proposal / Marketing copy / Research summary / Other
+
+### Step 3: PERSONA
+Who is the Intended Reader?
+- Paste a description, OR type `none`
+
+**If `none`:** System auto-generates an IR from GOAL + FORMAT, flagging all assumptions. User corrects or approves before Line 1.
+
+---
+
+## PERSONA DEPTH TIERS
+
+Tier is auto-assessed from GOAL + FORMAT. User can override.
+
+| Tier | Stakes | Typical Formats | Persona Depth |
+|------|--------|-----------------|---------------|
+| **1 — Surface** | Low | Text message, quick email, Slack | Relationship + 1 priority + reading context |
+| **2 — Functional** | Medium | Formal email, memo, pitch, summary | History + accountability + reading behavior + blind spot |
+| **3 — Consequential** | High | Cover letter, persuasive letter, proposal, legal, fundraising | Epistemic position + institutional logic + decision authority + stakes + blind spot |
+
+---
+
+## PERSONA FORMAT BY TIER
+
+### Tier 1 — Surface IR
+- **Relationship to writer:** How do they know you? What's the power dynamic?
+- **One priority:** What do they care about most right now?
+- **Reading context:** Where and how are they reading this? Attention level?
+
+### Tier 2 — Functional IR
+- **Professional history:** Where they've been, what they've built or protected
+- **Accountability structure:** What they're measured on, what they're protecting
+- **Reading behavior:** What they look for, when skepticism activates
+- **Blind spot:** What they systematically underweight and why
+
+### Tier 3 — Consequential IR
+All Tier 2 elements plus:
+- **Epistemic position:** What vantage point do they occupy? (Peer / Gatekeeper / Decision-maker)
+- **Institutional logic:** What does the organization or context actually need from this communication?
+- **Decision authority:** Can they act alone, or do they need to bring others?
+- **Stakes:** What happens if they act? What happens if they don't?
+
+---
+
+## AUTO-PERSONA GENERATION
+
+Triggered when user enters `none` at PERSONA step.
+
+System generates a best-guess IR from GOAL + FORMAT at the appropriate tier depth. Output format:
+
+```
+IR AUTO-GENERATED — Tier [1 / 2 / 3]
+
+Name: [Invented name]
+Role: [Inferred from GOAL + FORMAT]
+[Tier-appropriate persona elements, fully populated]
+
+ASSUMPTIONS FLAGGED:
+- [List every inference made]
+
+Approve this IR or correct before Line 1.
+```
+
+User approves, corrects specific elements, or replaces the IR entirely. No scoring begins until IR is confirmed.
+
+---
+
+## SCORING SYNTAX
+
+Each line receives nine simultaneous scores.
+
+### Immediate Metrics (3)
+- **LR (Line Reading)** — 1–10 effectiveness of the line in isolation
+- **BLD (Build from Previous)** — 1–10 how the line registers against the prior line's arc
+- **CUM (Cumulative Build)** — 1–10 the line's contribution to overall arc to date
+
+### Neural Oscillation Metrics (4)
+- **MNM (Momentum)** — 1–10 is the arc accelerating, stalling, or cycling?
+- **NRD (Narrative Debt)** — What's promised but unpaid? (phrase or short sentence)
+- **CHR (Coherence)** — 1–10 is the emerging portrait of the writer cohesive or contradictory?
+- **PRN (Pattern Recognition)** — 1–10 can the reader see a coherent through-line?
+
+### Reader State (2)
+- **Trust** — 1–10 belief in the writer's competence and credibility
+- **Skepticism** — 1–10 doubt about intent, accuracy, or hidden gaps
+
+### Output Block Format
+```
+LR: X/10 | BLD: X/10 | CUM: X/10 | MNM: X/10 | NRD: [phrase] | CHR: X/10 | PRN: X/10
+
+Trust: X/10 | Skepticism: X/10
+
+[One or two sentences mirroring IR's sequential consciousness. No explanations unless escalated.]
+
+**Next line needs:** [4–5 words directional guidance]
+```
+
+---
+
+## SESSION METRIC FILTERS
+
+Metric output can be filtered at intake or at any point mid-session.
+
+**Command:** `METRICS: [abbreviations]`
+**Example:** `METRICS: LR BLD TRUST` — suppresses all other metrics for this session.
+
+Takes effect immediately. Persists until overridden or session ends.
+
+---
+
+## LINE NUMBERING
+
+Prefix each submitted line with its number: **L1, L2, L3…**
+
+Enables clean navigation without reproducing full lines in the chat.
+
+---
+
+## STRUCTURAL TRANSITION MARKER
+
+Append **¶** to any line that opens a new section or shifts the composition's argument.
+
+Signals that BLD and CUM should weight arc consequence more heavily than line-level craft.
+
+---
+
+## INTERACTION MECHANICS
+
+| User input | Claude behavior |
+|-----------|-----------------|
+| Submit line (L1, L2, etc.) | Score all active metrics + IR consciousness + next-line guidance |
+| `Go back to L[n]` or variants | Return to that line's scores without reproduction. Error if L[n] > current. |
+| `goback1line` or variants | Navigate to L[current-1] and return its scores. Error if at L1. |
+| `pwlt` or variants | Print full metrics table for all lines to date. Stackable with modifiers. |
+| `pl[n]wt` or variants | Print metrics table for last n lines. Stackable with modifiers. |
+| `pll` or variants | Print most recent submitted line text only. No scores or comments. |
+| `no scores` / `just scores` / `no comments` / `comments` | Output modifiers; stack with any command |
+| `Suggestions` or variants | Directional guidance only. No rewrite. |
+| `Start again` or variants | Rescore current line clean |
+| `What does [IR name] want to see next?` or variants | IR's unspoken expectation |
+| `What's the problem?` or variants | Structural diagnosis of failing line |
+| `METRICS: [list]` | Set active metric filter for session |
+| `##` + context | Escape; inject context or direction without triggering scoring |
+| `PAUSE` or variants | Pause session; enter conversational mode. State is saved. |
+| `RESUME` or variants | Resume from exact pause point. All scores restored. |
+| `WHERE?` or variants | Report current line, scoring state, and resume point |
+| `END` | Close line-by-line phase; trigger closing protocol |
+
+---
+
+## ESCALATION LADDER
+
+Default mode: score + IR consciousness only. Escalate by command.
+
+1. **Suggestions** — directional guidance, no rewrite
+2. **What does [IR name] want to see next?** — IR's unspoken expectation at this moment
+3. **What's the problem?** — structural diagnosis: voice, logic, positioning, or momentum
+
+---
+
+## DIAGNOSTIC DEPTH
+
+At escalation level 3, identify whether the problem is:
+- **Voice** — register mismatch with the IR
+- **Logic** — claim doesn't connect to prior argument
+- **Positioning** — writer talking about self instead of addressing IR's context
+- **Momentum** — line retreats instead of advances
+
+One or two sentences only.
+
+---
+
+## CLOSING PROTOCOL
+
+Triggered by `END`.
+
+### CLOSE
+One paragraph IR reaction to the complete composition as a single experience:
+- What worked
+- What remained unanswered
+- Overall impression of the writer
+
+### Composite Score
+Single number out of 10. IR's gut assessment of the composition's effectiveness.
+
+### VERDICT
+Binary: Did it accomplish the stated GOAL? Yes or No.
+
+One sentence of reasoning. Followed by:
+- **Hope:** What the IR wants to be true going forward
+- **Fear:** What they're still not sure of
+
+---
+
+## SKILL DISAMBIGUATION
+
+### Standalone Mode (default)
+All commands fire as written. No prefix required.
+
+### Multi-Skill Mode
+Declared at session open with `lxl.start multi`, or auto-triggered when another skill is already active.
+
+All LxL commands require `lxl.` prefix:
+- `lxl.PAUSE` / `lxl.RESUME` / `lxl.END`
+- `lxl.L3` / `lxl.gbl5`
+- `lxl.WHERE?`
+
+Non-prefixed commands route to the other active skill.
+
+`lxl.WHERE?` always resolves to LxL state regardless of mode.
+
+---
+
+## COMMAND MATCHING RULES
+
+- Case-insensitive across all commands
+- Word-boundary matching: commands must be standalone or clear command sequences, not embedded in prose
+- `END` inside a sentence ("the email's end") does NOT trigger closing protocol
+- Standalone `END` or `lxl.END` DOES
+- Multiple commands in one message: process in order of appearance
+
+---
+
+# APPENDIX A: COMMAND REFERENCE
+
+## Navigation Commands
+
+| Command | Variants | Behavior |
+|---------|----------|----------|
+| `Go back to L[n]` | `Back to L[n]`, `gbl[n]`, `gbL[n]`, `Revisit L[n]`, `Re-score L[n]` | Return to that line's scores without reproducing the line text. Error if L[n] > current: `error - current line [n.1], command line [n.2] does not yet exist.` |
+| `goback1line` | `gb1`, `back one`, `go back one line` | Navigate to L[current-1] and return its scores. Error if already at L1. |
+| `Start again` | `Rescore`, `Try again`, `Reset line` | Rescore current line clean, no prior score retained |
+| `WHERE?` | `Where are we?`, `Current state?`, `What line?` | Report current line, metric filter state, IR loaded, resume point |
+
+## Print Commands
+
+| Command | Variants | Behavior |
+|---------|----------|----------|
+| `pwlt` | `print working line table`, `pwt`, `print table` | Print full nine-metric table for all lines submitted to date. Stackable with output modifiers. |
+| `pl[n]wt` | `print last [n] lines table`, `pl[n]t` | Print metrics table for last n lines. Specify which metrics optionally. Stackable with output modifiers. |
+| `pll` | `print last line`, `print line` | Print most recent submitted line text only. No scores. No comments. |
+
+## Output Modifiers
+
+Modifiers stack with any command. Apply in order of appearance.
+
+| Modifier | Variants | Behavior |
+|----------|----------|----------|
+| `no scores` | `noscore`, `suppress scores` | Suppress metric scores from output |
+| `no comments` | `nocomments`, `suppress comments`, `no consciousness` | Suppress IR consciousness from output |
+| `just scores` | `scores only`, `only scores` | Output scores only; suppress IR consciousness and next-line guidance |
+| `comments` | `just comments`, `consciousness only`, `hm comments` | Output IR consciousness only; suppress scores and next-line guidance |
+
+## Escalation Commands
+
+| Command | Variants | Escalation Level |
+|---------|----------|-----------------|
+| `Suggestions` | `Direction?`, `What should change?`, `Where do I go?` | 1 of 3 |
+| `What does [IR] want to see next?` | `[IR]'s expectation?`, `Next move for [IR]?`, `What's [IR] looking for?` | 2 of 3 |
+| `What's the problem?` | `Diagnose`, `Why fail?`, `Debug this`, `What broke?` | 3 of 3 |
+
+## Session Control Commands
+
+| Command | Variants | Behavior |
+|---------|----------|----------|
+| `PAUSE` | `Pause scenario`, `Hold on`, `Step back`, `Let's pause` | Pause; save state; enter conversational mode |
+| `RESUME` | `Continue`, `Back to it`, `Pick up where we left off` | Resume from pause point; restore all scores and IR state |
+| `##` | `## context`, `##context` | Inject context or direction; no scoring triggered; can appear anywhere in message |
+| `METRICS: [list]` | — | Filter active metrics for session; takes effect immediately |
+| `END` | `Done`, `Finish`, `Close`, `End audit`, `That's it` | Trigger closing protocol |
+
+---
+
+# APPENDIX B: ABBREVIATIONS GLOSSARY
+
+## Immediate Metrics
+
+| Abbreviation | Full Term | Definition | Scale |
+|---|---|---|---|
+| **LR** | Line Reading | Effectiveness of the line in isolation; does it work as written independent of context? | 1–10 |
+| **BLD** | Build from Previous | How the line registers against the prior line's arc; does it advance, stall, or retreat? | 1–10 |
+| **CUM** | Cumulative Build | The line's contribution to overall arc across all lines submitted to date | 1–10 |
+
+## Neural Oscillation Metrics
+
+| Abbreviation | Full Term | Definition | Scale |
+|---|---|---|---|
+| **MNM** | Momentum | Arc velocity: accelerating, stalling, cycling, or collapsing | 1–10 |
+| **NRD** | Narrative Debt | What's promised but unpaid; what question hangs unanswered | Phrase |
+| **CHR** | Coherence | Emerging writer portrait: cohesive or contradictory | 1–10 |
+| **PRN** | Pattern Recognition | Reader's ability to track a coherent through-line | 1–10 |
+
+## Reader State Metrics
+
+| Abbreviation | Full Term | Definition | Scale |
+|---|---|---|---|
+| **Trust** | Reader Trust | Belief in the writer's competence and credibility | 1–10 |
+| **Skepticism** | Reader Skepticism | Doubt about intent, accuracy, or hidden gaps | 1–10 |
+
+## Session Abbreviations
+
+| Abbreviation | Full Term | Use |
+|---|---|---|
+| **IR** | Intended Reader | The fictionalized reader persona loaded for the session |
+| **L[n]** | Line [number] | Line reference in audit (L1, L2, L3…) |
+| **gbl[n]** | Go Back Line [n] | Shorthand for "Go back to L[n]" |
+| **¶** | Structural Marker | Appended to signal new section or argument shift |
+| **N/A** | Not Applicable | Used in BLD for L1 (no prior line to build from) |
+
+## NRD State Examples
+
+| NRD State | Interpretation |
+|-----------|----------------|
+| `Who is this?` | Reader has no identity anchor for the writer |
+| `So what?` | Claim made; relevance to reader not yet established |
+| `Can you deliver?` | Credibility implied but not demonstrated |
+| `Why me?` | Writer hasn't connected the ask to this reader specifically |
+| `WOW.` | Positive debt — writer delivered more than expected |
+| Blank / none | Debt paid; expectation fulfilled |
+
+---
+
+**Control document lxl-v002.md** — Universal line-by-line reader simulation. Format-agnostic. Tiered persona depth. Auto-persona generation with assumption flagging. Full command reference and abbreviations appendices. Ready for testing.
